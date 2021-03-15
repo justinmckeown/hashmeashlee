@@ -27,12 +27,13 @@ def get_os_details():
 
 
 
-def itterate():
+def itterate(filepath):
     start_time = datetime.now()
     file_count = 0
     error_count = 0
     count = 1
-    for currentDir, subs, files in os.walk(r'C:\Users\j.mckeown\Documents\jobApplications\QOMPLX\OSINT Technical\OSINT Technical Assesment\Supportingmaterial\Evidence'):
+    print(f'About to search on filepath: {filepath}')
+    for currentDir, subs, files in os.walk(filepath):
         if len(files) >0:
             hash_and_stash(files, currentDir)
         else:
