@@ -1,4 +1,4 @@
-from tkinter import  Tk, Label, LabelFrame, Button, Entry, W, N, E, S, X,Y, Frame, LEFT, RIGHT, CENTER, Text, messagebox
+from tkinter import  Tk, Label, LabelFrame, Button, Entry, W, N, E, S, X,Y, Frame, LEFT, RIGHT, CENTER, Text, messagebox, Scrollbar
 from tkinter.filedialog import askdirectory
 import diectorydive
 
@@ -23,6 +23,8 @@ class HasherApp:
         
         self.report_header = LabelFrame(results_frame, text='Report')
         self.report_text = Text(self.report_header)
+        self.scrollbar = Scrollbar(self.report_header, command=self.report_text.yview)
+        self.report_text['yscrollcommand'] = self.scrollbar.set
 
 
         #grid layout....
@@ -33,6 +35,7 @@ class HasherApp:
         
         self.report_header.grid(row=0, column=0, padx=10, pady=10, sticky=(N,S,W,E))
         self.report_text.grid(row=0, column=0, padx=10, pady=10, sticky=(N,S,W,E))
+        self.scrollbar.grid(row=0, column=1, sticky=(N,S,E))
         
         #Add frames to 
         search_frame.grid(row=0, column=0, columnspan=2, sticky=(N,W,E))
@@ -72,13 +75,20 @@ class HasherApp:
     def go_hash(self):
         try:
             print(f'go_hash called')
-            diectorydive.itterate(self.the_file_path.get())
-
+            report = diectorydive.itterate(self.the_file_path.get())
         except Exception as e:
             print(f'Error in go_hash: {e}')
             messagebox.showerror("ERROR", f"something has gone wrong while attempting to produce hashes o fyour files. Message is as follows:\n {e}")
-        else:
+        finally:
+            report.insert(2, '\n\n')
+            self.write_report(report)
             messagebox.showinfo("SUCCESS!", "Hashing files has completed without error")
+    
+
+    def write_report(self, l: list):
+        for index, entry in enumerate(l,start=0):
+            self.report_text.insert(float(index+1), entry)
+        
 
 
 

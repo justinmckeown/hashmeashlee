@@ -31,18 +31,30 @@ def itterate(filepath):
     start_time = datetime.now()
     file_count = 0
     error_count = 0
+    report = []
+    report.append(f'START TIME: {str(start_time)}\n')
     count = 1
     print(f'About to search on filepath: {filepath}')
     for currentDir, subs, files in os.walk(filepath):
+        file_count += len(files)
         if len(files) >0:
-            hash_and_stash(files, currentDir)
+            report.extend(hash_and_stash(files, currentDir))
+            report.append('\n\n')
+            
         else:
             print(f'{currentDir} has no files')
+            report.append(currentDir+'\n')
+            report.append('Directory has no files\n')
+            report.append('\n')
         count +=1
+    report.insert(1,f'FINISH TIME: {str(datetime.now())}\n'+'\n')
 
+    return report
 
 
 def hash_and_stash(files, directory):
+    details = []
+    details.append(directory+'\n')
     with open(directory+os_details.get('slash')+'hashes.csv', 'w', newline='') as hashfile:
         writer = csv.writer(hashfile)
         writer.writerow(['File Name', 'Sha256 Hash', 'DateTime'])
@@ -50,6 +62,8 @@ def hash_and_stash(files, directory):
             dt = datetime.strftime(datetime.now(), '%Y-%m-%d-%H:%M:%S')
             s = sha256sum(directory+os_details.get('slash')+f)
             writer.writerow([f,s,dt])
+            details.append(str(f)+'\t'+str(s)+'\n')
+    return details
 
 
 
@@ -89,4 +103,4 @@ def sha256sum_v2(filename):
 if __name__ == '__main__':
     get_os_details()
     process_input()
-    itterate()
+    t = itterate()
