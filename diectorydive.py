@@ -14,6 +14,7 @@ def print_hello():
 def process_input():
     file_path = str(input('What is the file path to the directory which contains the files and subfolders you wish to hash?\n'))
     print(file_path)
+    return file_path
 
 def get_os_details():
     try:
@@ -99,8 +100,9 @@ def get_digest(file_path):
     return h.hexdigest()
 
 
-
 if __name__ == '__main__':
     get_os_details()
-    process_input()
-    t = itterate('/')
+    target_dir = process_input()
+    t = itterate(target_dir)
+    if t:
+        print(f'Hashing Process completed')
