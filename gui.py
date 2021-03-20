@@ -1,4 +1,4 @@
-from tkinter import  Tk, Label, LabelFrame, Button, Entry, W, N, E, S, X,Y, Frame, LEFT, RIGHT, CENTER, Text, messagebox, Scrollbar
+from tkinter import  Tk, Label, LabelFrame, Button, Entry, W, N, E, S, X,Y, Frame, LEFT, RIGHT, CENTER, Text, messagebox, Scrollbar, PhotoImage
 from tkinter.filedialog import askdirectory
 import diectorydive
 
@@ -8,6 +8,7 @@ class HasherApp:
         self.master = master
         self.master.title("Hash Me Ashlee")
         self.master.minsize(750,500)
+        self.master.tk.call('wm', 'iconphoto', self.master._w, PhotoImage(file='icons/window_icon.png'))
         
         self.width = master.winfo_screenwidth()
         self.height = master.winfo_screenheight()
@@ -43,7 +44,6 @@ class HasherApp:
         results_frame.grid(row=2, column=0, columnspan=2, sticky=(N,S,E,W))
 
         #configure searchframes expanding
-        #TODO: See: https://tkdocs.com/tutorial/grid.html 
         search_frame.columnconfigure(0, weight=0)
         search_frame.columnconfigure(1, weight=3)
         search_frame.columnconfigure(2, weight=0)
@@ -58,36 +58,32 @@ class HasherApp:
         self.master.columnconfigure(0, weight=3)
         self.master.columnconfigure(1, weight=3)
         self.master.rowconfigure(2, weight=3)
-        
-
-
-        
-
-    
-        #self.the_file_path.bind("<1>", self.get_filepath)
 
         
     def get_filepath(self):
+        self.the_file_path.delete(0,'end')
         pth = askdirectory()
         print(f'PATH: {pth}')
         self.the_file_path.insert(0,pth)
     
     def go_hash(self):
-        try:
-            print(f'go_hash called')
-            report = diectorydive.itterate(self.the_file_path.get())
-        except Exception as e:
-            print(f'Error in go_hash: {e}')
-            messagebox.showerror("ERROR", f"something has gone wrong while attempting to produce hashes o fyour files. Message is as follows:\n {e}")
-        finally:
-            report.insert(2, '\n\n')
-            self.write_report(report)
-            messagebox.showinfo("SUCCESS!", "Hashing files has completed without error")
+        if not self.the_file_path.get():
+            messagebox.showinfo("NO FILE PATH","Please set the file path to the folder containing the files you wish to produce hash signtatures for")
+        else:
+            try:
+                report = diectorydive.itterate(self.the_file_path.get())
+            except Exception as e:
+                messagebox.showerror("ERROR", f"something has gone wrong while attempting to produce hashes of your files. Message is as follows:\n {e}")
+            finally:
+                report.insert(2, '\n\n')
+                self.write_report(report)
+                messagebox.showinfo("SUCCESS!", "Hashing files has completed")
     
 
     def write_report(self, l: list):
         for index, entry in enumerate(l,start=0):
             self.report_text.insert(float(index+1), entry)
+
         
 
 

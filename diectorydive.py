@@ -42,12 +42,12 @@ def itterate(filepath):
             report.append('\n\n')
             
         else:
-            print(f'{currentDir} has no files')
             report.append(currentDir+'\n')
             report.append('Directory has no files\n')
             report.append('\n')
         count +=1
     report.insert(1,f'FINISH TIME: {str(datetime.now())}\n'+'\n')
+    report_to_dir(filepath, report)
 
     return report
 
@@ -64,6 +64,14 @@ def hash_and_stash(files, directory):
             writer.writerow([f,s,dt])
             details.append(str(f)+'\t'+str(s)+'\n')
     return details
+
+def report_to_dir(dir, report):
+    try:
+        with open(dir+os_details.get('slash')+'report.txt', 'w', encoding='utf-8') as f:
+            for i in report:
+                f.write(i)
+    except Exception as e:
+        print(f'Error: {e}')
 
 
 
@@ -91,16 +99,8 @@ def get_digest(file_path):
     return h.hexdigest()
 
 
-#NOTE: This may only work on Linux Systems, but may be faster
-def sha256sum_v2(filename):
-    h  = hashlib.sha256()
-    with open(filename, 'rb') as f:
-        with mmap.mmap(f.fileno(), 0, prot=mmap.PROT_READ) as mm:
-            h.update(mm)
-    return h.hexdigest()
-
 
 if __name__ == '__main__':
     get_os_details()
     process_input()
-    t = itterate()
+    t = itterate('/')
