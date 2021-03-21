@@ -124,12 +124,20 @@ def get_digest(file_path):
     return h.hexdigest()
 
 
+def present_hashing_options(ls: list) -> str:
+    print('Available Hashing Algorithims:')
+    for index, item in enumerate(ls):
+        print(f'{index}. : {item}')
+    ans = int(input('From the list above, please enter the number of the Hasing Algorithim you\'d like to use\n'))
+    return ans    
+
 if __name__ == '__main__':
     ls = get_hashing_algs()
     #TODO: Make user select a hasing algirithim from a list
     print(ls)
-    hash_file('ted', 'md5')
     get_os_details()
+    hashing_alg = present_hashing_options(ls)
+    hash_type = ls[hashing_alg]
     target_dir = process_input()
     t = itterate(target_dir)
     if t:
