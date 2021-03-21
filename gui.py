@@ -1,4 +1,4 @@
-from tkinter import  Tk, Label, LabelFrame, Button, Entry, W, N, E, S, X,Y, Frame, LEFT, RIGHT, CENTER, Text, messagebox, Scrollbar, PhotoImage
+from tkinter import  Tk, Label, LabelFrame, Button, Entry, W, N, E, S, X,Y, Frame, LEFT, RIGHT, CENTER, Text, messagebox, Scrollbar, StringVar, OptionMenu, PhotoImage
 from tkinter.filedialog import askdirectory
 import diectorydive
 
@@ -17,11 +17,22 @@ class HasherApp:
         button_frame = Frame(master)
         results_frame = Frame(master)
 
+        #Path to file setup
         self.myLabel = Label(search_frame, text="Path to Folder: ")
         self.myButton = Button(search_frame, text="Find Folder", command=self.get_filepath)
         self.the_file_path = Entry(search_frame)
         self.hashButton = Button(button_frame, text="Hash Files", command=self.go_hash)
         
+        #setup hashlist
+        self.option_val = StringVar()
+        self.available_hashes = diectorydive.get_hashing_algs()
+        #TODO: Finish setting the default value to sha1 hash
+        place = self.option_default_val()
+        self.option_val.set(self.available_hashes[place])
+        print(f'Option Val set to: {self.option_val}')
+        self.option_menu = OptionMenu(button_frame, self.option_val, *self.available_hashes)
+        
+        #Report setup
         self.report_header = LabelFrame(results_frame, text='Report')
         self.report_text = Text(self.report_header)
         self.scrollbar = Scrollbar(self.report_header, command=self.report_text.yview)
@@ -32,6 +43,7 @@ class HasherApp:
         self.myLabel.grid(row=0, column=0, padx=5, pady=10)
         self.the_file_path.grid(row=0, column=1, columnspan=3, padx=5, pady=10, sticky=(W,E))
         self.myButton.grid(row=0, column=4, padx=5, pady=5, sticky=(E))
+        self.option_menu.grid(row=1, column=3, padx=5, pady=2, sticky=(E))
         self.hashButton.grid(row=1, column=4, padx=5, pady=2, sticky=(E))
         
         self.report_header.grid(row=0, column=0, padx=10, pady=10, sticky=(N,S,W,E))
@@ -58,6 +70,17 @@ class HasherApp:
         self.master.columnconfigure(0, weight=3)
         self.master.columnconfigure(1, weight=3)
         self.master.rowconfigure(2, weight=3)
+    
+    
+    def option_default_val(self):
+        #available_hashes = diectorydive.get_hashing_algs()
+        for index, val in enumerate(self.available_hashes):
+            if val == 'sha1':
+                print('found')
+                return index
+        else:
+            return 0
+        
 
         
     def get_filepath(self):
@@ -71,6 +94,7 @@ class HasherApp:
             messagebox.showinfo("NO FILE PATH","Please set the file path to the folder containing the files you wish to produce hash signtatures for")
         else:
             try:
+                diectorydive.hash_type = str(self.option_val.get())
                 report = diectorydive.itterate(self.the_file_path.get())
             except Exception as e:
                 messagebox.showerror("ERROR", f"something has gone wrong while attempting to produce hashes of your files. Message is as follows:\n {e}")
@@ -81,12 +105,9 @@ class HasherApp:
     
 
     def write_report(self, l: list):
+        self.report_text.delete(1.0, 'end')
         for index, entry in enumerate(l,start=0):
             self.report_text.insert(float(index+1), entry)
-
-        
-
-
 
 
 if __name__ == '__main__':
