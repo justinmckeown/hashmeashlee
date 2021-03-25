@@ -14,7 +14,8 @@ Therfore, for a directory with the following subfolder and file and structures:
 an additional hash file with extension .csv would be added to both Dir A and Dir B. Each of these files owuld contain a list of the files within the respective folders with their hashes.
 
 ## Use
-Run the main.py file from terminal, like you would any python file.  
+To run from the commanline Run the main.py file from terminal by typing `python main.py`
+To run the GUI version run `python gui.py`
 
 ### Work in progress
 I'm currenlty working on the following features:
