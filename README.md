@@ -11,12 +11,13 @@ Therfore, for a directory with the following subfolder and file and structures:
     - file_B2
     - file_B3
 
-an additional hash file with extension .csv would be added to both Dir A and Dir B. Each of these files owuld contain a list of the files within the respective folders with their hashes.
+an additional file with extension .csv would be added to both Dir A and Dir B. Each of added file will contain a list of the files within the respective folders with their hashes and the time at which the has value was generated.
+ 
 
 ## Use
 To run from the commanline navigate to the folder containing the code, then do either of the following:
  - Run the main.py file from terminal by typing `python main.py`
- - To run the GUI version run `python gui.py`
+ - Run the GUI version by typing `python gui.py`
 
 ### Work in progress
 I'm currenlty working on the following features:
