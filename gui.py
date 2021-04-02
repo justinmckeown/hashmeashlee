@@ -78,7 +78,7 @@ class HasherApp:
     
     def option_default_val(self):
         for index, val in enumerate(self.available_hashes):
-            if val == 'sha1':
+            if val == 'sha256':
                 print(f'found: {val} Returning: {index}')
                 return index
         else:
