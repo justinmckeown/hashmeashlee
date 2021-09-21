@@ -21,5 +21,4 @@ To run from the commanline navigate to the folder containing the code, then do e
 
 ### Work in progress
 I'm currenlty working on the following features:
-1. **Tkinter GUI** (so you can run it if you're uncomfortable with the commandline
-2. **Verification** (so you can take a while that's alrready been hashed with the programe and verify the hashes in the hasfile
+1. **Verification** Take a file that's alrready been hashed with the programe and verify the hashes in the hashfile
