@@ -79,7 +79,9 @@ def hash_and_stash(files, directory):
             dt = datetime.strftime(datetime.now(), '%Y-%m-%d-%H:%M:%S')
             s = perform_hash(directory+os_details.get('slash')+f)
             writer.writerow([f,s,dt])
+            #NOTE: Swap the two below to toggle hash only outputs
             details.append(str(f)+'\t'+str(s)+'\n')
+            #details.append(str(s)+'\n')
     return details
 
 
